@@ -36,14 +36,14 @@ public class ResponseData {
             objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
             ObjectReader objectReader = objectMapper.reader();
 
-            if ("JourneyPatternPointOnLine".equals(type)) {
-                objectReader  = objectReader.forType(new TypeReference<List<JourneyPatternPointOnLine>>(){});
-            } else {
-                objectReader  = objectReader.forType(new TypeReference<List<StopPoint>>(){});
+            switch (type) {
+                case "JourneyPatternPointOnLine" -> objectReader = objectReader.forType(new TypeReference<List<JourneyPatternPointOnLine>>(){});
+                case "StopPoint" -> objectReader = objectReader.forType(new TypeReference<List<StopPoint>>(){});
+                default -> throw new RuntimeException("Unsupported type value");
             }
             return objectReader.readValue(result);
         } catch (Exception e) {
-            log.error("Could not parse list to domain objects!");
+            log.error("Could not parse list into domain objects");
             throw new RuntimeException(e);
         }
     }

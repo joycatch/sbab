@@ -1,6 +1,7 @@
 package se.sbab.assignment.gateway
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
@@ -10,39 +11,24 @@ import se.sbab.assignment.response.LineDataResponse
 import se.sbab.assignment.response.ResponseData
 import spock.lang.Specification
 
-class BusRouteGatewaySpec  extends Specification {
+import static se.sbab.assignment.TestHelper.exampleJourneyPatternPointOnLine
+import static se.sbab.assignment.TestHelper.exampleStopPoint
 
-    def journeyPoint1 = JourneyPatternPointOnLine.builder()
-            .id(1)
-            .lineNumber(1)
-            .directionCode(1)
-            .journeyPatternPointNumber(1)
-            .build()
-    def journeyPoint2 = JourneyPatternPointOnLine.builder()
-            .id(2)
-            .lineNumber(1)
-            .directionCode(2)
-            .journeyPatternPointNumber(2)
-            .build()
-    def listOfJourneyPatternPointOnLines = [journeyPoint1, journeyPoint2] as JourneyPatternPointOnLine[]
+class BusRouteGatewaySpec extends Specification {
 
-    def stopPoint1 = StopPoint.builder()
-            .stopPointNumber(1)
-            .stopPointName("A random name")
-            .build()
-    def stopPoint2 = StopPoint.builder()
-            .stopPointNumber(2)
-            .stopPointName("Another name")
-            .build()
-    def stopPoint3 = StopPoint.builder()
-            .stopPointNumber(3)
-            .stopPointName("A third name")
-            .build()
-    def listOfStopPoints = [stopPoint1, stopPoint2, stopPoint3] as StopPoint[]
+    def listOfJourneyPatternPointOnLines = [exampleJourneyPatternPointOnLine(),
+                                            exampleJourneyPatternPointOnLine()] as JourneyPatternPointOnLine[]
+    def listOfStopPoints = [exampleStopPoint(),
+                            exampleStopPoint(),
+                            exampleStopPoint()] as StopPoint[]
 
     def objectMapper = new ObjectMapper()
     RestTemplate restTemplate = Mock()
     BusRouteGateway busRouteGateway = new BusRouteGateway(restTemplate)
+
+    def setup() {
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
+    }
 
     def "should return expected amount of JourneyPatternPointOnLine from external source"() {
         given:

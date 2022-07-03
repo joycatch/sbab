@@ -13,7 +13,7 @@ public interface JourneyPatternPointOnLineRepository extends JpaRepository<Journ
     List<LineNumberAndCount> findRoutesWithMostStops(@Param("amount") Integer amount);
 
     public static interface LineNumberAndCount {
-        Long getLineNumber();
+        Integer getLineNumber();
         Integer getStopPointCount();
     }
 }
