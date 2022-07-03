@@ -1,4 +1,4 @@
-# sbab
+# SBAB
 
 ## Challenge
 
