@@ -1,5 +1,7 @@
+let presentNumberOfBusLines = 10;
+
 async function getLineNumbersWithMostStops() {
-    let url = '/bus-route-service/most-stop-points/10';
+    let url = '/bus-route-service/most-stop-points/' + presentNumberOfBusLines;
     try {
         let res = await fetch(url);
         return await res.json();

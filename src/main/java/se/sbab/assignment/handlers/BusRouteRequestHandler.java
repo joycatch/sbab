@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.sbab.assignment.repository.JourneyPatternPointOnLineRepository.LineNumberAndCount;
+import se.sbab.assignment.repository.JourneyPatternPointOnLineRepository.LineNumberAndStopPointCount;
 import se.sbab.assignment.service.BusRouteService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -19,9 +18,14 @@ public class BusRouteRequestHandler {
     @Autowired
     BusRouteService busRouteService;
 
+    @RequestMapping("/most-stop-points")
+    public List<LineNumberAndStopPointCount> getRoutesWithMostStops() {
+        return getRoutesWithMostStops(10);
+    }
+
     @RequestMapping("/most-stop-points/{amount}")
-    public List<LineNumberAndCount> getRoutesWithMostStops(@PathVariable(value="amount") Optional<Integer> amount) {
-        return busRouteService.findRoutesWithMostStops(amount.isPresent() ? amount.get() : 10);
+    public List<LineNumberAndStopPointCount> getRoutesWithMostStops(@PathVariable(value="amount") Integer amount) {
+        return busRouteService.findRoutesWithMostStops(amount);
     }
 
     @RequestMapping("/stop-points/{lineNumber}")

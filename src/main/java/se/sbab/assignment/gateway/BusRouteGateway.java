@@ -10,6 +10,7 @@ import se.sbab.assignment.domain.JourneyPatternPointOnLine;
 import se.sbab.assignment.domain.StopPoint;
 import se.sbab.assignment.response.LineDataResponse;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -29,11 +30,19 @@ public class BusRouteGateway {
     }
 
     public List<JourneyPatternPointOnLine> getJourneyPatternPointOnLine() {
-        return getResponse("jour").getResponseData().toDomain();
+        LineDataResponse lineDataResponse = getResponse("jour");
+        if (lineDataResponse != null) {
+            return lineDataResponse.getResponseData().toDomain();
+        }
+        return Collections.emptyList();
     }
 
     public List<StopPoint> getStopPoints() {
-        return getResponse("stop").getResponseData().toDomain();
+        LineDataResponse lineDataResponse = getResponse("stop");
+        if (lineDataResponse != null) {
+            return lineDataResponse.getResponseData().toDomain();
+        }
+        return Collections.emptyList();
     }
 
     private LineDataResponse getResponse(String model) {

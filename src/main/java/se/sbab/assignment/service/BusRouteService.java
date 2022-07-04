@@ -7,10 +7,11 @@ import se.sbab.assignment.domain.JourneyPatternPointOnLine;
 import se.sbab.assignment.domain.StopPoint;
 import se.sbab.assignment.gateway.BusRouteGateway;
 import se.sbab.assignment.repository.JourneyPatternPointOnLineRepository;
-import se.sbab.assignment.repository.JourneyPatternPointOnLineRepository.LineNumberAndCount;
+import se.sbab.assignment.repository.JourneyPatternPointOnLineRepository.LineNumberAndStopPointCount;
 import se.sbab.assignment.repository.StopPointRepository;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +36,10 @@ public class BusRouteService {
         stopPointRepository.saveAll(stopPoints);
     }
 
-    public List<LineNumberAndCount> findRoutesWithMostStops(int amount) {
+    public List<LineNumberAndStopPointCount> findRoutesWithMostStops(int amount) {
+        if (amount < 0) {
+            return Collections.emptyList();
+        }
         return journeyPatternPointOnLineRepository.findRoutesWithMostStops(amount);
     }
 

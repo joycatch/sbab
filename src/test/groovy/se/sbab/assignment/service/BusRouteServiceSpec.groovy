@@ -19,4 +19,25 @@ class BusRouteServiceSpec extends Specification {
         expect:
         busRouteService.stopPointRepository.count() > 0
     }
+
+    def "returned list should be of correct #length when invoking findRoutesWithMostStops"() {
+        given:
+        def routes = busRouteService.findRoutesWithMostStops(length)
+
+        expect:
+        routes.size() == (length < 0 ? 0 : length)
+
+        where:
+        length << [-100, -5, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    }
+
+    def "the route with the most stops should have at least 5 StopPoints"() {
+        given:
+        def list = busRouteService.findRoutesWithMostStops(1)
+        def lineNumber = list.iterator().next().getLineNumber()
+        def stopPoints = busRouteService.findStopPoints(lineNumber)
+
+        expect:
+        stopPoints.size() >= 5
+    }
 }

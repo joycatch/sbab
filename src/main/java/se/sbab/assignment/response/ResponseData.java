@@ -41,6 +41,7 @@ public class ResponseData {
                 case "StopPoint" -> objectReader = objectReader.forType(new TypeReference<List<StopPoint>>(){});
                 default -> throw new RuntimeException("Unsupported type value");
             }
+
             return objectReader.readValue(result);
         } catch (Exception e) {
             log.error("Could not parse list into domain objects");
